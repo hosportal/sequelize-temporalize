@@ -1,5 +1,5 @@
 {
-  "name": "sequelize-temporalize",
+  "name": "@hosportal/sequelize-temporalize",
   "version": "4.2.0",
   "description": "Temporal tables for Sequelize",
   "main": "dist/index.js",
