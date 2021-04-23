@@ -1,13 +1,15 @@
 {
   "name": "sequelize-temporalize",
-  "version": "2.0.5",
+  "version": "4.2.0",
   "description": "Temporal tables for Sequelize",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "build": "tsc",
+    "test": "mocha --exit --bail --require source-map-support/register dist/test/"
   },
   "repository": {
     "type": "git",
@@ -22,21 +24,25 @@
     "paranoid",
     "historical"
   ],
-  "author": "greenify <greenify@notsharingmy.info> (https://github.com/greenify)",
+  "author": "James Jansson <do_not_send_email@email.info> (https://github.com/jamesajansson)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/JamesJansson/sequelize-temporalize/issues"
   },
   "homepage": "https://github.com/JamesJansson/sequelize-temporalize#readme",
   "dependencies": {
-    "lodash": "^4.17.11"
+    "@types/mocha": "^5.2.7",
+    "lodash": "^4.17.11",
+    "source-map-support": "^0.5.13"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^6.1.4",
     "prettier": "^1.18.2",
     "sequelize": "^5.4.0",
-    "sqlite3": "^4.0.6"
+    "sqlite3": "^4.0.6",
+    "typescript": "^3.5.3"
   }
 }
