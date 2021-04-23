@@ -24,7 +24,7 @@
     "paranoid",
     "historical"
   ],
-  "author": "James Jansson <do_not_send_email@email.info> (https://github.com/jamesajansson)",
+  "author": "Hosportal <info@hosportal.com> (https://github.com/hosportal)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/JamesJansson/sequelize-temporalize/issues"
