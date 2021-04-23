@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTransactionId = exports.Temporalize = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const temporalizeDefaultOptions = {
     // runs the insert within the sequelize hook chain, disable
