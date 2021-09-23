@@ -171,19 +171,16 @@ export function Temporalize({
   function transformToHistoryEntry(
     instance,
     options,
+    archivedAt,
     {
       destroyOperation,
       restoreOperation
     }: { destroyOperation?: Boolean; restoreOperation?: Boolean }
   ) {
     const dataValues = _.cloneDeep(instance.dataValues);
-    dataValues.archivedAt = instance.dataValues.updatedAt || Date.now(); // Date.now() if options.timestamps = false
-    if (restoreOperation) {
-      dataValues.archivedAt = Date.now(); // There may be a better time to use, but we are yet to find it
-    }
+    dataValues.archivedAt =  archivedAt;
+
     if (destroyOperation) {
-      // If paranoid is true, use the deleted value
-      dataValues.archivedAt = instance.dataValues.deletedAt || Date.now();
       dataValues.deletion = true;
     }
     if (temporalizeOptions.logTransactionId && options.transaction) {
@@ -203,7 +200,12 @@ export function Temporalize({
       restoreOperation
     }: { destroyOperation?: Boolean; restoreOperation?: Boolean }
   ) {
-    const dataValues = transformToHistoryEntry(instance, options, {
+    const archivedAt = new Date();
+    const dataValues = transformToHistoryEntry(
+      instance,
+      options,
+      archivedAt,
+      {
       destroyOperation,
       restoreOperation
     });
@@ -225,8 +227,13 @@ export function Temporalize({
       restoreOperation
     }: { destroyOperation?: Boolean; restoreOperation?: Boolean }
   ) {
+    const archivedAt = new Date();
     const dataValuesArr = instances.map(instance => {
-      return transformToHistoryEntry(instance, options, {
+      return transformToHistoryEntry(
+        instance,
+        options,
+        archivedAt,
+        {
         destroyOperation,
         restoreOperation
       });

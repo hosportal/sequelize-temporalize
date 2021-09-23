@@ -139,15 +139,10 @@ function Temporalize({ model, modelHistory, sequelize, temporalizeOptions }) {
         modelHistoryOutput = sequelize.define(historyName, historyAttributes, historyOptions);
     }
     modelHistoryOutput.originModel = model;
-    function transformToHistoryEntry(instance, options, { destroyOperation, restoreOperation }) {
+    function transformToHistoryEntry(instance, options, archivedAt, { destroyOperation, restoreOperation }) {
         const dataValues = lodash_1.default.cloneDeep(instance.dataValues);
-        dataValues.archivedAt = instance.dataValues.updatedAt || Date.now(); // Date.now() if options.timestamps = false
-        if (restoreOperation) {
-            dataValues.archivedAt = Date.now(); // There may be a better time to use, but we are yet to find it
-        }
+        dataValues.archivedAt = archivedAt;
         if (destroyOperation) {
-            // If paranoid is true, use the deleted value
-            dataValues.archivedAt = instance.dataValues.deletedAt || Date.now();
             dataValues.deletion = true;
         }
         if (temporalizeOptions.logTransactionId && options.transaction) {
@@ -160,7 +155,8 @@ function Temporalize({ model, modelHistory, sequelize, temporalizeOptions }) {
     }
     function createHistoryEntry(instance, options, { destroyOperation, restoreOperation }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dataValues = transformToHistoryEntry(instance, options, {
+            const archivedAt = new Date();
+            const dataValues = transformToHistoryEntry(instance, options, archivedAt, {
                 destroyOperation,
                 restoreOperation
             });
@@ -176,8 +172,9 @@ function Temporalize({ model, modelHistory, sequelize, temporalizeOptions }) {
     }
     function createHistoryEntryBulk(instances, options, { destroyOperation, restoreOperation }) {
         return __awaiter(this, void 0, void 0, function* () {
+            const archivedAt = new Date();
             const dataValuesArr = instances.map(instance => {
-                return transformToHistoryEntry(instance, options, {
+                return transformToHistoryEntry(instance, options, archivedAt, {
                     destroyOperation,
                     restoreOperation
                 });
