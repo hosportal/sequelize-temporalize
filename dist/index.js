@@ -111,8 +111,7 @@ function Temporalize({ model, modelHistory, sequelize, temporalizeOptions }) {
     historyOptions.indexes = [];
     if (model.rawAttributes.id) {
         historyOptions.indexes.push({
-            fields: ['hid', 'id'],
-            unique: true,
+            fields: ['id'],
         });
     }
     let modelHistoryOutput;

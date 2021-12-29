@@ -125,8 +125,7 @@ export function Temporalize({
   historyOptions.indexes = [];
   if (model.rawAttributes.id) {
     historyOptions.indexes.push({
-      fields: ['hid', 'id'],
-      unique: true,
+      fields: ['id'],
     })
   }
 
