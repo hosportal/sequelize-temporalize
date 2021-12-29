@@ -108,27 +108,13 @@ function Temporalize({ model, modelHistory, sequelize, temporalizeOptions }) {
     ];
     const modelOptions = lodash_1.default.omit(model.options, excludedNames);
     const historyOptions = lodash_1.default.assign({}, modelOptions, historyOwnOptions);
-    // We want to delete indexes that have unique constraint
-    const indexes = lodash_1.default.cloneDeep(historyOptions.indexes);
-    if (Array.isArray(indexes)) {
-        historyOptions.indexes = indexes.filter(function (index) {
-            return !index.unique && index.type != 'UNIQUE';
+    historyOptions.indexes = [];
+    if (model.rawAttributes.id) {
+        historyOptions.indexes.push({
+            fields: ['hid', 'id'],
+            unique: true,
         });
     }
-    historyOptions.indexes.forEach(indexElement => {
-        if (indexElement.name.length + temporalizeOptions.indexSuffix.length >=
-            63) {
-            console.log('index name ' +
-                indexElement.name +
-                ' is very long and hence it was shortened before adding the suffix ' +
-                temporalizeOptions.indexSuffix);
-            indexElement.name =
-                indexElement.name.substring(0, indexElement.name.length - temporalizeOptions.indexSuffix.length) + temporalizeOptions.indexSuffix;
-        }
-        else {
-            indexElement.name += temporalizeOptions.indexSuffix;
-        }
-    });
     let modelHistoryOutput;
     if (modelHistory) {
         const historyClassOptions = Object.assign(Object.assign({}, historyOptions), { sequelize, tableName: historyName });
